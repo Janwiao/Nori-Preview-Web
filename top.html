@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TOP - Ragnarok Preview List By Nori Toolkit</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">TW</div>
+        <div class="brand-text">
+          <strong>Nori Toolkit</strong>
+          <span>Ragnarok Data</span>
+        </div>
+      </div>
+      <nav class="menu">
+        <a class="menu-item active" href="top.html">TOP</a>
+        <a class="menu-item" href="npclist.html">NPCs &amp; Mobs</a>
+        <a class="menu-item" href="headgear.html">Headgear (頭飾)</a>
+        <a class="menu-item" href="capes.html">Capes (披風)</a>
+        <a class="menu-item" href="https://janwiao.github.io/ro-bonus-finder/" target="_blank" rel="noopener noreferrer">RO Bonus Finder</a>
+        <a class="menu-item" href="about.html">About</a>
+      </nav>
+      <div class="theme-box">
+        <label for="themeSelect">主題</label>
+        <select id="themeSelect">
+          <option value="default">Default</option>
+          <option value="classic">Classic</option>
+          <option value="sand">Sand</option>
+          <option value="night">Night</option>
+        </select>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <h1>TOP</h1>
+      </header>
+
+      <section class="top-page">
+        <p>此頁刻意留白。</p>
+        <p>進入本網站即表示你已理解並同意：這裡沒有免費餅乾可以給你。</p>
+        <p>© 2026 Nori；部分內容與商標屬於其各自權利人。</p>
+      </section>
+
+      <section class="legal">
+        <p>所有與《Ragnarok》相關之圖像與素材，其著作權屬於 © 2002-2026 Gravity Co., Ltd. 與 Lee Myoungjin。</p>
+        <p>部分《Ragnarok》相關圖像素材之著作權屬於 © 2026 GungHo Online Entertainment, Inc.。</p>
+        <p>本專案與 Gravity Co., Ltd. 無任何官方從屬、合作、授權、維護、贊助或背書關係。官方網站：<a href="https://gravity.co.kr/" target="_blank" rel="noopener noreferrer">https://gravity.co.kr/</a></p>
+      </section>
+    </main>
+  </div>
+
+<script>
+const themeEl = document.getElementById('themeSelect');
+function applyTheme(theme) {
+  const t = theme || 'default';
+  document.documentElement.setAttribute('data-theme', t);
+  if (themeEl) themeEl.value = t;
+}
+themeEl.addEventListener('change', () => {
+  const t = themeEl.value || 'default';
+  applyTheme(t);
+  try {
+    localStorage.setItem('nori_theme', t);
+  } catch (_) {}
+});
+let initTheme = 'default';
+try {
+  const savedTheme = localStorage.getItem('nori_theme');
+  if (savedTheme) initTheme = savedTheme;
+} catch (_) {}
+applyTheme(initTheme);
+</script>
+</body>
+</html>

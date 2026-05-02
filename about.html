@@ -1,0 +1,140 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About - Ragnarok Preview List By Nori Toolkit</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">TW</div>
+        <div class="brand-text">
+          <strong>Nori Toolkit</strong>
+          <span>Ragnarok Data</span>
+        </div>
+      </div>
+      <nav class="menu">
+        <a class="menu-item" href="top.html">TOP</a>
+        <a class="menu-item" href="npclist.html">NPCs &amp; Mobs</a>
+        <a class="menu-item" href="headgear.html">Headgear (頭飾)</a>
+        <a class="menu-item" href="capes.html">Capes (披風)</a>
+        <a class="menu-item" href="https://janwiao.github.io/ro-bonus-finder/" target="_blank" rel="noopener noreferrer">RO Bonus Finder</a>
+        <a class="menu-item active" href="about.html">About</a>
+      </nav>
+      <div class="theme-box">
+        <label for="themeSelect">主題</label>
+        <select id="themeSelect">
+          <option value="default">Default</option>
+          <option value="classic">Classic</option>
+          <option value="sand">Sand</option>
+          <option value="night">Night</option>
+        </select>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <h1>About</h1>
+      </header>
+
+      <section class="about-page">
+        <div class="about-profile">
+          <img src="about_assets/nori.png" alt="Nori avatar" />
+        </div>
+        <div class="about-main">
+          <h2>NORI</h2>
+          <div class="lang-switch" id="langSwitch">
+            <button type="button" class="lang-btn active" data-lang="en">EN</button>
+            <button type="button" class="lang-btn" data-lang="zh">中文</button>
+            <button type="button" class="lang-btn" data-lang="pt">PT-BR</button>
+          </div>
+
+          <div class="lang-panel" data-lang-panel="en">
+            <p>I build and maintain Ragnarok tooling across server/client workflows.</p>
+            <p>RO Server × Client</p>
+            <p>Palette / Effect / Costume / DB / Map</p>
+            <p><span class="status-badge">Status: Open for Commission</span></p>
+            <p>Contact: not available for now.</p>
+          </div>
+
+          <div class="lang-panel" data-lang-panel="zh" hidden>
+            <p>我主要製作與維護 Ragnarok 相關工具，涵蓋伺服器與客戶端流程。</p>
+            <p>RO 伺服器 × 客戶端</p>
+            <p>調色盤 / 特效 / 服飾 / DB / 地圖</p>
+            <p><span class="status-badge">狀態：可接案</span></p>
+            <p>聯絡方式：暫時不提供</p>
+          </div>
+
+          <div class="lang-panel" data-lang-panel="pt" hidden>
+            <p>Eu desenvolvo e mantenho ferramentas de Ragnarok para fluxos de servidor e cliente.</p>
+            <p>Servidor de RO × Cliente</p>
+            <p>Paleta / Efeito / Costume / DB / Mapa</p>
+            <p><span class="status-badge">Status: Aberto para comissões</span></p>
+            <p>Contato: indisponível por enquanto.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="legal">
+        <p>所有與《Ragnarok》相關之圖像與素材，其著作權屬於 © 2002-2026 Gravity Co., Ltd. 與 Lee Myoungjin。</p>
+        <p>部分《Ragnarok》相關圖像素材之著作權屬於 © 2026 GungHo Online Entertainment, Inc.。</p>
+        <p>本專案與 Gravity Co., Ltd. 無任何官方從屬、合作、授權、維護、贊助或背書關係。官方網站：<a href="https://gravity.co.kr/" target="_blank" rel="noopener noreferrer">https://gravity.co.kr/</a></p>
+      </section>
+    </main>
+  </div>
+
+<script>
+const themeEl = document.getElementById('themeSelect');
+function applyTheme(theme) {
+  const t = theme || 'default';
+  document.documentElement.setAttribute('data-theme', t);
+  if (themeEl) themeEl.value = t;
+}
+
+themeEl.addEventListener('change', () => {
+  const t = themeEl.value || 'default';
+  applyTheme(t);
+  try {
+    localStorage.setItem('nori_theme', t);
+  } catch (_) {}
+});
+
+const langSwitchEl = document.getElementById('langSwitch');
+const langButtons = Array.from(document.querySelectorAll('.lang-btn'));
+const langPanels = Array.from(document.querySelectorAll('[data-lang-panel]'));
+
+function setAboutLang(lang) {
+  langButtons.forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
+  langPanels.forEach((p) => {
+    p.hidden = p.getAttribute('data-lang-panel') !== lang;
+  });
+  try {
+    localStorage.setItem('about_lang', lang);
+  } catch (_) {}
+}
+
+langSwitchEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('.lang-btn');
+  if (!btn) return;
+  setAboutLang(btn.dataset.lang || 'en');
+});
+
+let initLang = 'en';
+try {
+  const saved = localStorage.getItem('about_lang');
+  if (saved === 'en' || saved === 'zh' || saved === 'pt') initLang = saved;
+} catch (_) {}
+setAboutLang(initLang);
+
+let initTheme = 'default';
+try {
+  const savedTheme = localStorage.getItem('nori_theme');
+  if (savedTheme) initTheme = savedTheme;
+} catch (_) {}
+applyTheme(initTheme);
+</script>
+</body>
+</html>
