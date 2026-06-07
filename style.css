@@ -239,6 +239,20 @@ body {
   font-size: 20px;
 }
 
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.generated-at {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 .controls {
   display: flex;
   gap: 8px;
