@@ -40,7 +40,7 @@
       <header class="topbar">
         <div class="title-row">
           <h1>Ragnarok Headgear List</h1>
-          <span class="generated-at">更新：2026-06-12 00:29</span>
+          <span class="generated-at">更新：2026-06-12 02:30</span>
         </div>
         <div class="controls">
           <div class="preview-mode" id="previewMode">
@@ -185,7 +185,7 @@ function renderLightboxMeta(item) {
   });
   const servers = Array.from(serverSet).sort();
   const badges = servers.length
-    ? `<div class="server-badges">${servers.map(s => `<span class="server-badge">${escapeHtml(s)}</span>`).join('')}</div>`
+    ? `<div class="server-badges">${servers.map(s => `<span class="server-badge">${escapeHtml(s)}</span>`).join(' ')}</div>`
     : '<div class="server-badges muted">尚無伺服器資料</div>';
   const itemLinks = items.map((it) => {
     const itemid = Number(it?.itemid);
