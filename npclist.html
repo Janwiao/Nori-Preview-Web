@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Nori Preview List 提供 Ragnarok NPC 與魔物外觀預覽、ID 搜尋、Sprite 名稱查詢與靜態資料瀏覽。" />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://ropreview.nori-labs.com/npclist.html" />
+<meta property="og:title" content="Ragnarok NPC / MOB List" />
+<meta property="og:description" content="Nori Preview List 提供 Ragnarok NPC 與魔物外觀預覽、ID 搜尋、Sprite 名稱查詢與靜態資料瀏覽。" />
+<meta property="og:url" content="https://ropreview.nori-labs.com/npclist.html" />
+<meta property="og:site_name" content="Nori Preview List" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
   <title>Ragnarok NPC / MOB List</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
@@ -22,6 +31,7 @@
         <a class="menu-item active" href="npclist.html">NPCs &amp; Mobs</a>
         <a class="menu-item " href="headgear.html">Headgear (頭飾)</a>
         <a class="menu-item " href="capes.html">Capes (披風)</a>
+        <a class="menu-item" href="hateffect.html">Hateffects (特效)</a>
         <a class="menu-item" href="https://rotools.nori-labs.com" target="_blank" rel="noopener noreferrer">Nori-Tools</a>
         <a class="menu-item" href="about.html">About</a>
       </nav>
@@ -40,7 +50,7 @@
       <header class="topbar">
         <div class="title-row">
           <h1>Ragnarok NPC / MOB List</h1>
-          <span class="generated-at">更新：2026-06-07 13:39</span>
+          <span class="generated-at">更新：2026-06-12 10:54</span>
         </div>
         <div class="controls">
           <div class="preview-mode" id="previewMode">
@@ -84,6 +94,7 @@
   <dialog id="lightbox">
     <img id="lightboxImg" alt="preview" />
     <p id="lightboxName"></p>
+    <div id="lightboxMeta" class="lightbox-meta"></div>
     <button id="copyIdBtn">複製Sprite</button>
     <button id="copyBig5Btn">複製Sprite(Big5)</button>
     <button id="closeLightbox">Close</button>
@@ -148,6 +159,7 @@ const viewAllEl = document.getElementById('viewAll');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 const lightboxName = document.getElementById('lightboxName');
+const lightboxMeta = document.getElementById('lightboxMeta');
 const copyIdBtn = document.getElementById('copyIdBtn');
 const copyBig5Btn = document.getElementById('copyBig5Btn');
 const toastEl = document.getElementById('toast');
@@ -160,6 +172,44 @@ let fitThumbTimer = null;
 function normalize(s) {
   return (s || '').toString().toLowerCase();
 }
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+function renderLightboxMeta(item) {
+  if (!IS_HEADGEAR_PAGE && !IS_CAPES_PAGE) return '';
+  const items = Array.isArray(item?.itemids) ? item.itemids : [];
+  if (!items.length) return '';
+  const serverSet = new Set();
+  items.forEach((it) => {
+    (Array.isArray(it?.servers) ? it.servers : []).forEach((s) => {
+      const value = String(s || '').trim();
+      if (value) serverSet.add(value);
+    });
+  });
+  const servers = Array.from(serverSet).sort();
+  const badges = servers.length
+    ? `<div class="server-badges">${servers.map(s => `<span class="server-badge">${escapeHtml(s)}</span>`).join(' ')}</div>`
+    : '<div class="server-badges muted">尚無伺服器資料</div>';
+  const itemLinks = items.map((it) => {
+    const itemid = Number(it?.itemid);
+    const name = String(it?.name || '').trim();
+    const url = String(it?.detail_url || (Number.isFinite(itemid) ? `https://divine-pride.net/database/item/${itemid}` : '')).trim();
+    const label = `${Number.isFinite(itemid) ? itemid : ''}${name ? ` - ${name}` : ''}`;
+    if (url) {
+      return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+    }
+    return `<span>${escapeHtml(label)}</span>`;
+  }).join('');
+  return `${badges}<div class="itemid-list"><strong>ItemID</strong>${itemLinks}</div>`;
+}
+
 
 function toAssetSrc(path) {
   const p = (path || '').toString();
@@ -657,6 +707,8 @@ function render() {
       currentLightboxSpriteBig5 = displaySpriteBig5(item);
       lightboxImg.src = toAssetSrc(thumb);
       lightboxName.textContent = `${item.name} (#${item.id})`;
+      lightboxMeta.innerHTML = renderLightboxMeta(item);
+      lightboxMeta.hidden = !lightboxMeta.innerHTML;
       lightbox.showModal();
     });
   });
@@ -989,5 +1041,6 @@ if (!isSamePageVisit) {
 }
 render();
 </script>
+
 </body>
 </html>
