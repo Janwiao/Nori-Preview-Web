@@ -120,6 +120,29 @@ body {
   color: #fff;
 }
 
+.site-counter {
+  margin-top: auto;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.site-counter strong,
+.site-counter span {
+  display: block;
+}
+
+.site-counter strong {
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.site-counter span {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
 .theme-box {
   margin-top: auto;
   padding: 12px;
